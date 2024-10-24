@@ -1,44 +1,75 @@
-print ("Login // Sign up Script")
+from flask import Flask, render_template, request, redirect, url_for, session, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 
-# sql connection is going to go here
+# Home page route
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-def Sign_up():
-    
-    username = info.form['username'] 
-    password = info.form['password']
+# Sign up route
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        if username in users:
+            flash('Username already exists. Please choose a different one.')
+            return redirect(url_for('signup'))
 
-    hashed_password = generate_password_hash(password, method='sha256') # hash method for encrpting the password for safety of user info 
+        # Hash the password
+        hashed_password = generate_password_hash(password, method='sha256')
+        users[username] = hashed_password
+        
+        flash('User signup success!')
+        return redirect(url_for('login'))
 
-    # sql check if username is already inside the database
+    return render_template('signup.html')
 
-    # sql create a new user and save it into the database
-
-    return 'user signup success!'
-
-# might try add in a check to see if a user name already exit inside the data base 
-#this would stop errors when users are trying to log in 
-
+# Login route
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Check if username exists and password is correct
+        if username in users and check_password_hash(users[username], password):
+            session['user_id'] = username
+            flash('Login successful!')
+            return redirect(url_for('vault'))  # Redirect to vault or home page
+        else:
+            flash('Invalid username or password.')
 
-    if info.form == 'POST': # here im going to use a method called post which is made to interact with sql 
+    return render_template('login.html')
 
-    username = info.form['username'] 
-    password = info.form['password']
+# Vault route
+@app.route('/vault')
+def vault():
+    if 'user_id' not in session:
+        flash('Please log in to access your vault.')
+        return redirect(url_for('login'))
 
-    
-# sql connection for vault goes here
-def add_to_vault():
+    return render_template('vault.html')
 
-    detail_lable = vault.form  # the name of password 
-    
-    username = vault.form
+# Route to add a password
+@app.route('/add', methods=['POST'])
+def add_password():
+    if 'user_id' not in session:
+        flash('Please log in to add passwords.')
+        return redirect(url_for('login'))
 
-    password = vault.form
+    site = request.form['site']
+    username = request.form['username']
+    password = request.form['password']
 
-    #sql check if inputed informantion is already inside the vault 
+    # Here you would save the password securely
+    print(f'Site: {site}, Username: {username}, Password: {password}')
+    return redirect(url_for('vault'))
 
-    hashed_password = generate_password_hash(password, method='sha256') # hash password 
+if __name__ == '__main__':
+    app.run(debug=True)print ("Login // Sign up Script")
 
-    return 'details added to your vault!'
+
 
      
