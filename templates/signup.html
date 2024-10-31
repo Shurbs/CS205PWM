@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Pasword Vault</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="logincontent">
+
+
+        <div class="logincontainer">
+            <div class="logingtext">
+               <h1>Login or Sign up </h1> 
+                <p>Login or sign up to get your passwords secure!</p>
+                
+            </div>
+                
+        </div>
+        <!-- shows the sign up function  -->
+        <div id="displaySignUp" class="displaySignUp"> 
+            <h2> Sign up</h2>
+
+
+            <form id= "userSignup">
+
+                <div>
+                    <label for="usernameSignup"> Enter a Username</label>
+                    <br />
+                    <input type="text" name="usernameSignup" id="usernameSignup" value="" placeholder="input a username">
+                </div>
+
+                <div>
+                    <label for="userPasswordSignup">Enter a Password</label>
+                    <br />
+                    <input type="password" name="userPasswordSignup" id="userPasswordSignup" value="" placeholder="input a password"> 
+                </div>
+                <button id="SignupBtn" type="Submit" value="Submit"> submit</button>
+            </form>
+             <button id="displayLogin">Login</button> 
+        </div>
+</body>
+</html>

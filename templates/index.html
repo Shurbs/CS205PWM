@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Flask App</title>
+    <title>My Pasword Vault</title>
     
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to My Flask App!</h1>
+    <form action="{{ url_for('signup.html') }}">
+    <button id="signup">Sign up </button>
+ </form>
+    
+    
 </body>
 </html>
-
