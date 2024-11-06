@@ -7,28 +7,29 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <div class="logincontent">
 
-                <!-- shows the login function  -->
-                <div id="displayLogin" class="displayLogin"> 
-                    <h2> Login</h2>
-        
-        
-                    <form id= "userLogin">
-        
-                        <div>
-                            <label for="usernameLogin"> Enter a Username</label>
-                            <br />
-                            <input type="text" name="usernameLogin" id="usernameLogin" value="" placeholder="input your username">
-                        </div>
-        
-                        <div>
-                            <label for="userPasswordLogin">Enter a Password</label>
-                            <br />
-                            <input type="password" name="userPasswordLogin" id="userPasswordLogin" value="" placeholder="input your password"> 
-                        </div>
-                        <button id="accountLoginBtn" type="Submit" value="Submit"> submit</button>
-                    </form>
-                    <button id="displaySignupBtn">Sign up</button> 
+        <!-- shows the login  function  -->
+        <div id="displayLogin" class="displayLogin"> 
+            <h2> login</h2>
+
+            <form id= "userLogin">
+
+                <div>
+                    <label for="usernameLogin"> Enter a Username</label>
+                    <br />
+                    <input type="text" name="usernameLogin" id="usernameLogin" value="" placeholder="input a username">
                 </div>
+
+                <div>
+                    <label for="userPasswordLogin">Enter a Password</label>
+                    <br />
+                    <input type="password" name="userPasswordLogin" id="userPasswordLogin" value="" placeholder="input a password"> 
+                </div>
+                <button id="LoginBtn" type="Submit" value="Submit"> submit</button>
+             
+        </div>
+</body>
+</html>
         
-            </div>
+  

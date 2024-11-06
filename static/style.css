@@ -7,28 +7,3 @@ body {
     height: 100vh;
     margin: 0;
 }
-.logincontent{
-    height: 94vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items:center;
-   padding-right: 25%;
-   padding-left: 10%;
-}
-.logingtext{
-    color: #805A00;
-}
-form{
-    font-size: 1.5rem;
-    letter-spacing: 0.2rem;
-}
-form div{
-    padding: 0 0 2rem 0;
-}
-button:hover{
-    cursor: pointer;
-}
-.displayLogin{
-    display: none;
-}
