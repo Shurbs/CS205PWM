@@ -2,34 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Pasword Vault</title>
-    
+    <title>My Password Vault</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="logincontent">
-
-        <!-- shows the login  function  -->
-        <div id="displayLogin" class="displayLogin"> 
-            <h2> login</h2>
-
-            <form id= "userLogin">
-
+        <div id="displayLogin" class="displayLogin">
+            <h2>Login</h2>
+            <!-- The form will submit to the login route and redirect to /vault after submission -->
+            <form id="userLogin" method="POST" action="{{ url_for('login') }}">
                 <div>
-                    <label for="usernameLogin"> Enter a Username</label>
+                    <label for="usernameLogin">Enter a Username</label>
                     <br />
-                    <input type="text" name="usernameLogin" id="usernameLogin" value="" placeholder="input a username">
+                    <input type="text" name="usernameLogin" id="usernameLogin" placeholder="Input a username" required>
                 </div>
-
                 <div>
                     <label for="userPasswordLogin">Enter a Password</label>
                     <br />
-                    <input type="password" name="userPasswordLogin" id="userPasswordLogin" value="" placeholder="input a password"> 
+                    <input type="password" name="userPasswordLogin" id="userPasswordLogin" placeholder="Input a password" required>
                 </div>
-                <button id="LoginBtn" type="Submit" value="Submit"> submit</button>
-             
+                <button type="submit" id="LoginBtn">Submit</button>
+            </form>
         </div>
+    </div>
 </body>
 </html>
-        
-  
