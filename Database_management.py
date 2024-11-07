@@ -13,8 +13,16 @@ def Login(username,password):
 
 
 
-def Register(Email,username,password):
+def Register(username,password):
     db = Connection
     c = db.cursor
-    c.execute('''INSERT INTO Login(Email,username,password) VALUES (?,?,?)'''(Email,username,password))
+    c.execute('''INSERT INTO Login(Email,username,password) VALUES (?,?,?)'''(username,password))
     c.commit()
+
+
+def Usercheck():
+    db = Connection
+    c = db.cursor
+    c.execute("SELECT Login FROM username")
+    users = c.fetchall()
+    return users
