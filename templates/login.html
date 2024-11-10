@@ -13,7 +13,7 @@
         <div id="displayLogin" class="displayLogin">
             <h2>Login</h2>
             <!-- The form will submit to the login route and redirect to /vault after submission -->
-            <form id="userLogin" method="POST" action="{{ url_for('login') }}">
+            <!--<form id="userLogin" method="POST" action="{{ url_for('login') }}">    this line of code was not allowing to have the submit button work but i think it might be needed for putting data into data base  -->
                 <div>
                     <label for="usernameLogin">Enter a Username</label>
                     <br />
@@ -24,7 +24,7 @@
                     <br />
                     <input type="password" name="userPasswordLogin" id="userPasswordLogin" placeholder="Input a password" required>
                 </div>
-                <button type="submit" id="LoginBtn">Submit</button>
+                <button onclick="window.location.href='/vault'" type="submit" id="LoginBtn">Submit</button>
             </form>
         </div>
     </div>
