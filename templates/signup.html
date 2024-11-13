@@ -2,35 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Pasword Vault</title>
-    
+    <title>Sign Up - My Password Vault</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <button onclick="window.location.href='/login'">Go to login page</button>
-</body>
-<body>
+
+    <!-- Display Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
     <div class="signupcontent">
-
-        <!-- shows the sign up function  -->
-        <div id="displaySignUp" class="displaySignUp"> 
-            <h2> Sign up</h2>
-
-            <form id= "userSignup">
-
+        <div id="displaySignup" class="displaySignup">
+            <h2>Sign Up</h2>
+            <!-- The form now properly submits to the signup route -->
+            <form id="userSignup" method="POST" action="{{ url_for('signup') }}">
                 <div>
-                    <label for="usernameSignup"> Enter a Username</label>
+                    <label for="usernameSignup">Enter a Username</label>
                     <br />
-                    <input type="text" name="usernameSignup" id="usernameSignup" value="" placeholder="input a username">
+                    <input type="text" name="username" id="usernameSignup" placeholder="Choose a username" required>
                 </div>
-
                 <div>
-                    <label for="userPasswordSignup">Enter a Password</label>
+                    <label for="passwordSignup">Enter a Password</label>
                     <br />
-                    <input type="password" name="userPasswordSignup" id="userPasswordSignup" value="" placeholder="input a password"> 
+                    <input type="password" name="password" id="passwordSignup" placeholder="Choose a password" required>
                 </div>
-                <button id="SignupBtn" type="Submit" value="Submit"> submit</button>
-            </form> 
+                <button type="submit" id="SignupBtn">Sign Up</button>
+            </form>
         </div>
+    </div>
 </body>
 </html>

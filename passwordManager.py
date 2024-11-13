@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 
 app = Flask(__name__)
-
+app.secret_key = 'passwordManagerKey'  #random key
 
 # Database connection
 def get_db_connection():
@@ -16,79 +16,86 @@ def get_db_connection():
 def index():
     return render_template('index.html')
 
-# Sign up route
+# Signup route
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    if request.method == 'POST':
+    if request.method == 'POST':  # Check if the form is submitted
         username = request.form['username']
         password = request.form['password']
 
-        # Check if user already exists
+        # Connect to the database
         conn = get_db_connection()
-        user = conn.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
-        if user:
-            flash('Username already exists. Please choose a different one.')
-            conn.close()
-            return redirect(url_for('signup'))
+        user = conn.execute('SELECT * FROM Login WHERE username = ?', (username,)).fetchone()
         
-        # Hash password and add new user
+        # Check if the username already exists
+        if user:
+            flash('Username is already taken.', 'error')  # Flash error message
+            conn.close()
+            return redirect(url_for('signup'))  # Redirect back to signup page to try again
+
+        # If username is unique, hash the password and add the user to the database
         hashed_password = generate_password_hash(password, method='sha256')
-        conn.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, hashed_password))
+        conn.execute('INSERT INTO Login (username, password) VALUES (?, ?)', (username, hashed_password))
         conn.commit()
         conn.close()
-        flash('Signup successful! Please log in.')
-        return redirect(url_for('login'))
-    
-    return render_template('signup.html')
+
+        flash('Signup successful! Please log in.', 'success')  # Flash success message
+        return redirect(url_for('login'))  # Redirect to the login page after signup
+
+    return render_template('signup.html')  # Render signup form
 
 # Login route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
+    if request.method == 'POST':  # Check if the form is submitted
         username = request.form['username']
         password = request.form['password']
 
         # Fetch user and verify password
         conn = get_db_connection()
-        user = conn.execute('SELECT * FROM users WHERE username = ?', (username,)).fetchone()
+        user = conn.execute('SELECT * FROM Login WHERE username = ?', (username,)).fetchone()
         conn.close()
-        if user and check_password_hash(user['password'], password):
-            session['user_id'] = user['id']
-            flash('Login successful!')
-            return redirect(url_for('vault'))
-        else:
-            flash('Invalid username or password.')
+
+        if user:  # User exists
+            if check_password_hash(user['password'], password):  # Password is correct
+                session['userID'] = user['id']
+                flash('Login successful!', 'success')
+                return redirect(url_for('vault'))  # Redirect to the vault page
+            else:  # Password is incorrect
+                flash('Invalid username or password.', 'error')  # Flash error message for wrong password
+        else:  # Username not found
+            flash('Username not found. Please try again.', 'error')  # Flash error message for non-existent username
 
     return render_template('login.html')
 
 # Vault route
 @app.route('/vault')
 def vault():
-    if 'user_id' not in session:
+    if 'userID' not in session:
         flash('Please log in to access your vault.')
         return redirect(url_for('login'))
     
     # Retrieve stored passwords for the logged-in user
     conn = get_db_connection()
-    passwords = conn.execute('SELECT * FROM passwords WHERE user_id = ?', (session['user_id'],)).fetchall()
+    passwords = conn.execute('SELECT * FROM Vault WHERE userID = ?', (session['userID'],)).fetchall()
     conn.close()
     return render_template('vault.html', passwords=passwords)
 
 # Add password route
 @app.route('/add', methods=['POST'])
 def add_password():
-    if 'user_id' not in session:
+    if 'userID' not in session:
         flash('Please log in to add passwords.')
         return redirect(url_for('login'))
 
-    site = request.form['site']
+    website = request.form['website']
     username = request.form['username']
     password = request.form['password']
 
     # Insert new password record
     conn = get_db_connection()
-    conn.execute('INSERT INTO passwords (user_id, site, username, password) VALUES (?, ?, ?, ?)',
-                 (session['user_id'], site, username, password))
+    conn.execute('INSERT INTO Vault (userID, website, username, password) VALUES (?, ?, ?, ?)',
+                 (session['userID'], website, username, password))
     conn.commit()
     conn.close()
     flash('Password added successfully!')
@@ -97,7 +104,7 @@ def add_password():
 # Logout route
 @app.route('/logout')
 def logout():
-    session.pop('user_id', None)
+    session.pop('userID', None)
     flash('You have been logged out.')
     return redirect(url_for('login'))
 

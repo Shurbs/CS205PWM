@@ -6,25 +6,34 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <button onclick="window.location.href='/signup'">Go to signup page</button> 
-</body>
-<body>
+    <button onclick="window.location.href='/signup'">Go to signup page</button>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul class="flash-messages">
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
     <div class="logincontent">
         <div id="displayLogin" class="displayLogin">
             <h2>Login</h2>
-            <!-- The form will submit to the login route and redirect to /vault after submission -->
-            <!--<form id="userLogin" method="POST" action="{{ url_for('login') }}">    this line of code was not allowing to have the submit button work but i think it might be needed for putting data into data base  -->
+            <!-- The form now properly submits to the login route -->
+            <form id="userLogin" method="POST" action="{{ url_for('login') }}">
                 <div>
                     <label for="usernameLogin">Enter a Username</label>
                     <br />
-                    <input type="text" name="usernameLogin" id="usernameLogin" placeholder="Input a username" required>
+                    <input type="text" name="username" id="usernameLogin" placeholder="Input a username" required>
                 </div>
                 <div>
                     <label for="userPasswordLogin">Enter a Password</label>
                     <br />
-                    <input type="password" name="userPasswordLogin" id="userPasswordLogin" placeholder="Input a password" required>
+                    <input type="password" name="password" id="userPasswordLogin" placeholder="Input a password" required>
                 </div>
-                <button onclick="window.location.href='/vault'" type="submit" id="LoginBtn">Submit</button>
+                <button type="submit" id="LoginBtn">Submit</button>
             </form>
         </div>
     </div>
