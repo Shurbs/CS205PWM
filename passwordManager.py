@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
+import zlib
+from base64 import urlsafe_b64encode as b64e, urlsafe_b64decode as b64d
+
 
 app = Flask(__name__)
 app.secret_key = 'passwordManagerKey'  #random key
@@ -90,7 +93,7 @@ def add_password():
 
     website = request.form['website']
     username = request.form['username']
-    password = request.form['password']
+    password = obscure(bytes(request.form['password'], 'ASCII'))
 
     # Insert new password record
     conn = get_db_connection()
@@ -110,3 +113,9 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+def obscure(data: bytes) -> bytes:
+    return b64e(zlib.compress(data, 9))
+
+def unobscure(obscured: bytes) -> bytes:
+    return zlib.decompress(b64d(obscured))
