@@ -14,6 +14,13 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+def obscure(data: bytes) -> bytes:
+    return b64e(zlib.compress(data, 9))
+
+def unobscure(obscured: bytes) -> bytes:
+    return zlib.decompress(b64d(obscured))
+
+
 # Home route
 @app.route('/')
 def index():
@@ -111,11 +118,17 @@ def logout():
     flash('You have been logged out.')
     return redirect(url_for('login'))
 
+@app.route('/show', methods=['GET'])
+def show_website(website):
+    if 'userID' not in session:
+        flash('Please log in to add passwords.')
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    conn.execute('SELECT * FROM Vault WHERE userID = ? and website = ?', (session['userID'], website ))
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
-def obscure(data: bytes) -> bytes:
-    return b64e(zlib.compress(data, 9))
-
-def unobscure(obscured: bytes) -> bytes:
-    return zlib.decompress(b64d(obscured))
