@@ -8,34 +8,26 @@
 </head>
 <body>
 
-    <div class = vaultcontent>
+    <div class = "vaultcontent">
+
+        <button onclick="window.location.href='http://127.0.0.1:5000'">Logout</button>
+
         <h1>Password Vault</h1>
 
-        <!-- Table displaying the user's passwords -->
-        <table id="password-table">
-            <thead>
-                <tr>
-                    <th>Service</th>
-                    <th>Username</th>
-                    <th>Password</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Dynamic content will be injected here -->
-            </tbody>
-        </table>
+        
+
+
 
         <!-- Button to add a new password -->
-        <button id="add-password-btn">Add New Password</button>
+        <!-- <button id="add-password-btn">Add New Password</button> -->
 
         <!-- Modal to add a new password -->
         <div id="add-password-modal" class="modal">
             <div class="modal-content">
-                <span class="close-btn">&times;</span>
+                
                 <h2>Add New Password</h2>
                 <form id="add-password-form" action="/add" method="post">
-                    <label for="service">Service Name:</label>
+                    <label2 for="service"> Website: </label2>
                     <input type="text" id="service" name="website" required><br>
                     
                     <label for="username">Username:</label>
@@ -46,6 +38,24 @@
                     
                     <button type="submit">Add Password</button>
                 </form>
+
+                
+        <!-- Table displaying the user's passwords -->
+        <table class="password-table">
+            <thead>
+                <tr>
+                    <th>Service |</th>
+                    <th>Username |</th>
+                    <th>Password |</th>
+                    <th>Actions |</th> <!--(will be button to remove)-->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dynamic content will be injected here -->
+            </tbody>
+        </table>
+
+
             </div>
     
     </div>
