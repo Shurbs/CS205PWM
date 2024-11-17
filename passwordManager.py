@@ -89,6 +89,7 @@ def vault():
     conn = get_db_connection()
     passwords = conn.execute('SELECT * FROM Vault WHERE userID = ?', (session['userID'],)).fetchall()
     conn.close()
+    print(passwords)
     return render_template('vault.html', passwords=passwords)
 
 # Add password route
@@ -117,15 +118,6 @@ def logout():
     session.pop('userID', None)
     flash('You have been logged out.')
     return redirect(url_for('login'))
-
-@app.route('/show', methods=['GET'])
-def show_website(website):
-    if 'userID' not in session:
-        flash('Please log in to add passwords.')
-        return redirect(url_for('login'))
-
-    conn = get_db_connection()
-    conn.execute('SELECT * FROM Vault WHERE userID = ? and website = ?', (session['userID'], website ))
 
 
 
