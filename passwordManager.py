@@ -8,6 +8,13 @@ from base64 import urlsafe_b64encode as b64e, urlsafe_b64decode as b64d
 app = Flask(__name__)
 app.secret_key = 'passwordManagerKey'  #random key
 
+class Service:
+    user_id: int
+    username: str
+    password: str
+    website: str
+
+
 # Database connection
 def get_db_connection():
     conn = sqlite3.connect('server_db.db')
@@ -87,10 +94,16 @@ def vault():
     
     # Retrieve stored passwords for the logged-in user
     conn = get_db_connection()
-    passwords = conn.execute('SELECT * FROM Vault WHERE userID = ?', (session['userID'],)).fetchall()
+    passwords: list[Service] = conn.execute('SELECT * FROM Vault WHERE userID = ?', (session['userID'],)).fetchall()
     conn.close()
-    print(passwords)
-    return render_template('vault.html', passwords=passwords)
+    service_list = []
+    for row in passwords:
+        userID = row['userID']
+        username = row['username']
+        password = unobscure(row['password']).decode('ASCII')
+        website = row['website']
+        service_list.append([userID,username,password,website])
+    return render_template('vault.html', passwords=service_list)
 
 # Add password route
 @app.route('/add', methods=['POST'])
