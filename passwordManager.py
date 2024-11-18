@@ -51,8 +51,12 @@ def signup():
             return redirect(url_for('signup'))  # Redirect back to signup page to try again
 
         # If username is unique, hash the password and add the user to the database
+        lastrow = conn.execute('SELECT * FROM Login ORDER by id DESC LIMIT 1;')
         hashed_password = generate_password_hash(password, method='sha256')
-        conn.execute('INSERT INTO Login (username, password) VALUES (?, ?)', (username, hashed_password))
+        for row in lastrow:
+            userid = row['id']
+        userid += 1
+        conn.execute('INSERT INTO Login (username, password, id) VALUES (?, ?, ?)', (username, hashed_password, userid))
         conn.commit()
         conn.close()
 
