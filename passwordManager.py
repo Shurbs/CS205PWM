@@ -129,13 +129,14 @@ def add_password():
     flash('Password added successfully!')
     return redirect(url_for('vault'))
 
-# Logout route
+
+# Logout route ( NOT IN USE AS OF CURRENT MVP )
 @app.route('/logout')
 def logout():
     session.pop('userID', None)
     flash('You have been logged out.')
     return redirect(url_for('login'))
-
+#  ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^
 
 
 if __name__ == '__main__':
